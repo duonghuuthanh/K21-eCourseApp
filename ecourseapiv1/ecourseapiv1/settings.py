@@ -29,7 +29,6 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 import pymysql
-
 pymysql.install_as_MySQLdb()
 
 # Application definition
@@ -43,7 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'courses',
     'ckeditor',
-    'ckeditor_uploader'
+    'ckeditor_uploader',
+    'rest_framework',
+    'drf_yasg'
 ]
 
 CKEDITOR_UPLOAD_PATH = "ckeditors/images/"

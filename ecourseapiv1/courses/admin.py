@@ -1,6 +1,7 @@
+import cloudinary
 from django.contrib import admin
 from django.utils.html import mark_safe
-from courses.models import Category, Course, Lesson, User, Tag
+from courses.models import Category, Course, Lesson, User, Tag, Comment, Like
 from django import forms
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
@@ -22,6 +23,9 @@ class MyCourseAdmin(admin.ModelAdmin):
 
     def my_image(self, instance):
         if instance:
+            if instance.image is cloudinary.CloudinaryResource:
+                return mark_safe(f"<img width='120' src='{instance.image.url}' />")
+
             return mark_safe(f"<img width='120' src='/static/{instance.image.name}' />")
 
     class Media:
@@ -35,3 +39,5 @@ admin.site.register(Course, MyCourseAdmin)
 admin.site.register(Lesson)
 admin.site.register(User)
 admin.site.register(Tag)
+admin.site.register(Comment)
+admin.site.register(Like)

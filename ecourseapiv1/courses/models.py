@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from ckeditor.fields import RichTextField
 from cloudinary.models import CloudinaryField
-#
 
 
 class User(AbstractUser):
@@ -63,6 +62,9 @@ class Interaction(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'{self.user_id} - {self.lesson_id}'
+
     class Meta:
         abstract = True
 
@@ -75,9 +77,3 @@ class Like(Interaction):
 
     class Meta:
         unique_together = ('user', 'lesson')
-
-
-
-# from django.db.models import Count
-# c = Category.objects.annotate(counter=Course('course_set')).values('id', 'name', 'counter')
-
