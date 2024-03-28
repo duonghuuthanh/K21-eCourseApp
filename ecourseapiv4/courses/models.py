@@ -50,6 +50,9 @@ class Lesson(BaseModel):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag)
 
+    def __str__(self):
+        return self.subject
+
     class Meta:
         unique_together = ('subject', 'course')
 
