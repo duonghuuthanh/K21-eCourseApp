@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-6wk90r3s+37$m%b!qt!_67sv(^*-l8p!%sbfg+!ns+fino^(al
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.74']
 
 import pymysql
 
