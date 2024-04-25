@@ -1,9 +1,29 @@
 from django.contrib import admin
+from django.db.models import Count
+from django.template.response import TemplateResponse
+
 from courses.models import Course, Category, Lesson, Tag, Comment, Like
 from django.utils.html import mark_safe
 from django import forms
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 import cloudinary
+from django.urls import path
+
+
+class MyAdminSite(admin.AdminSite):
+    site_header = 'iCourse'
+
+    def get_urls(self):
+        return [path('cate-stats/', self.stats_view)] + super().get_urls()
+
+    def stats_view(self, request):
+        stats = Category.objects.annotate(counter=Count('course__id')).values('id', 'name', 'counter')
+        return TemplateResponse(request, 'admin/stats.html', {
+            'stats': stats
+        })
+
+
+admin_site = MyAdminSite(name='iCourse')
 
 
 class CourseForm(forms.ModelForm):
@@ -33,8 +53,8 @@ class CourseAdmin(admin.ModelAdmin):
         }
 
 
-admin.site.register(Category)
-admin.site.register(Course, CourseAdmin)
-admin.site.register(Lesson)
-admin.site.register(Tag)
-admin.site.register(Comment)
+admin_site.register(Category)
+admin_site.register(Course, CourseAdmin)
+admin_site.register(Lesson)
+admin_site.register(Tag)
+admin_site.register(Comment)
