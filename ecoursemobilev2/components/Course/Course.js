@@ -1,21 +1,24 @@
-import moment from "moment";
 import React from "react";
-import { ActivityIndicator, Image, ScrollView, ScrollViewBase, Text, View } from "react-native";
-import { Chip, List, Searchbar } from "react-native-paper";
-import APIS, { endpoints } from "../../configs/APIS";
+import { ActivityIndicator, RefreshControl, ScrollView, View } from "react-native";
+import { Chip, Searchbar } from "react-native-paper";
+import APIs, { endpoints } from "../../configs/APIs";
 import MyStyles from "../../styles/MyStyles";
 import 'moment/locale/vi';
+import { TouchableOpacity } from "react-native-gesture-handler";
+import Item from "./Item";
+import { isCloseToBottom } from "../../configs/Utils";
 
-const Course = () => {
+const Course = ({navigation}) => {
     const [categories, setCategories] = React.useState(null);
     const [courses, setCourses] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
     const [q, setQ] = React.useState("");
     const [cateId, setCateId] = React.useState("");
+    const [page, setPage] = React.useState(1);
 
     const loadCates = async () => {
         try {
-            let res = await APIS.get(endpoints['categories']);
+            let res = await APIs.get(endpoints['categories']);
             setCategories(res.data);
         } catch (ex) {
             console.error(ex);
@@ -23,15 +26,27 @@ const Course = () => {
     }
 
     const loadCourses = async () => {
-        setLoading(true);
-        try {
-            let url = `${endpoints['courses']}?q=${q}&category_id=${cateId}`;
-            let res = await APIS.get(url);
-            setCourses(res.data.results);
-        } catch (ex) {
-            console.error(ex);
-        } finally {
-            setLoading(false);
+        if (page > 0) {
+            setLoading(true);
+            try {
+                let url = `${endpoints['courses']}?q=${q}&category_id=${cateId}&page=${page}`;
+                
+                let res = await APIs.get(url);
+    
+                if (res.data.next === null)
+                    setPage(0);
+    
+                if (page === 1)
+                    setCourses(res.data.results);
+                else
+                    setCourses(current => {
+                        return [...current, ...res.data.results];
+                    });
+            } catch (ex) {
+                console.error(ex);
+            } finally {
+                setLoading(false);
+            }
         }
     }
 
@@ -41,22 +56,47 @@ const Course = () => {
 
     React.useEffect(() => {
         loadCourses();
-    }, [q, cateId]);
+    }, [q, cateId, page]);
+
+    // const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+    //     const paddingToBottom = 20;
+    //     return layoutMeasurement.height + contentOffset.y >=
+    //       contentSize.height - paddingToBottom;
+    // };
+
+    const loadMore = ({nativeEvent}) => {
+        if (!loading && page > 0 && isCloseToBottom(nativeEvent)) {
+                setPage(page + 1);
+        }
+    }
+
+    const goLesson = (courseId) => {
+        navigation.navigate('Lesson', {'courseId': courseId})
+    }
+
+    const search = (value, callback) => {
+        setPage(1);
+        callback(value)
+    }
 
     return (
         <View style={[MyStyles.container, MyStyles.margin]}>
             <View style={[MyStyles.row, MyStyles.wrap]}>
-                <Chip mode={!cateId?"outlined":"flat"} onPress={() => setCateId("")} style={MyStyles.margin} icon="shape-plus">Tất cả</Chip>
+                <Chip mode={!cateId?"outlined":"flat"} onPress={() => search("", setCateId)} style={MyStyles.margin} icon="shape-plus">Tất cả</Chip>
                 {categories===null?<ActivityIndicator/>:<>
-                    {categories.map(c => <Chip mode={c.id===cateId?"outlined":"flat"} key={c.id} onPress={() => setCateId(c.id)} style={MyStyles.margin} icon="shape-plus">{c.name}</Chip>)}
+                    {categories.map(c => <Chip mode={c.id===cateId?"outlined":"flat"} key={c.id} onPress={() => search(c.id, setCateId)} style={MyStyles.margin} icon="shape-plus">{c.name}</Chip>)}
                 </>}
             </View>
             <View>
-                <Searchbar placeholder="Nhập từ khóa..." onChangeText={setQ} value={q} />
+                <Searchbar placeholder="Nhập từ khóa..." onChangeText={(t) => search(t, setQ)} value={q} />
             </View>
-            <ScrollView>
-                {courses.map(c => <List.Item key={c.id} title={c.subject} description={moment(c.created_date).fromNow()} left={() => <Image style={MyStyles.avatar} source={{uri: c.image}} />} />)}
+            <ScrollView onScroll={loadMore}>
+                <RefreshControl onRefresh={() => loadCourses()} />
                 {loading && <ActivityIndicator />}
+                {courses.map(c => <TouchableOpacity key={c.id} onPress={() => goLesson(c.id)}>
+                    <Item instance={c} />
+                </TouchableOpacity>)}
+                {loading && page > 1 && <ActivityIndicator />}
             </ScrollView>
         </View>
     );
