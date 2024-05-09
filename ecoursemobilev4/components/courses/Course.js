@@ -4,6 +4,7 @@ import React from 'react';
 import APIs, { endpoints } from "../../configs/APIs";
 import { Chip, List, Searchbar } from "react-native-paper";
 import Item from "../utils/Item";
+import { isCloseToBottom } from "../utils/Utils";
 
 const Course = ({navigation}) => {
     const [categories, setCategories] = React.useState(null);
@@ -55,11 +56,11 @@ const Course = ({navigation}) => {
         loadCourses();
     }, [q, cateId, page]);
 
-    const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
-        const paddingToBottom = 20;
-        return layoutMeasurement.height + contentOffset.y >=
-          contentSize.height - paddingToBottom;
-    };
+    // const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+    //     const paddingToBottom = 20;
+    //     return layoutMeasurement.height + contentOffset.y >=
+    //       contentSize.height - paddingToBottom;
+    // };
 
     const loadMore = ({nativeEvent}) => {
         if (!loading && page > 0 && isCloseToBottom(nativeEvent)) {
@@ -70,7 +71,7 @@ const Course = ({navigation}) => {
 
     const search = (value, callback) => {
         setPage(1);
-        callback(value)
+        callback(value);
     }
 
     return (

@@ -5,7 +5,7 @@ import APIs, { endpoints } from '../../configs/APIs';
 import MyStyles from "../../styles/MyStyles";
 import Item from '../utils/Item';
 
-const Lesson = ({ route }) => {
+const Lesson = ({ navigation, route }) => {
     const [lessons, setLessons] = React.useState(null);
     const courseId = route.params?.courseId;
 
@@ -26,7 +26,7 @@ const Lesson = ({ route }) => {
     return (
         <View style={MyStyles.container}>
             {lessons===null?<ActivityIndicator />:<>
-                {lessons.map(l => <TouchableOpacity key={l.id}>
+                {lessons.map(l => <TouchableOpacity key={l.id} onPress={() => navigation.navigate('LessonDetails', {'lessonId': l.id})}>
                     <Item instance={l} />
                 </TouchableOpacity>)}
             </>}
