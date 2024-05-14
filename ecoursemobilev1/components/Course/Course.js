@@ -1,12 +1,13 @@
 import React from "react";
-import moment from "moment";
-import { View, ActivityIndicator, Image, ScrollView, RefreshControl } from "react-native"
-import { Chip, List, Searchbar } from "react-native-paper";
+import { View, ActivityIndicator, Image, ScrollView, RefreshControl, TouchableOpacity } from "react-native"
+import { Chip, Searchbar } from "react-native-paper";
 import APIs, { endpoints } from "../../configs/APIs";
 import MyStyles from "../../styles/MyStyles";
 import "moment/locale/vi";
+import Item from "../Utils/Item";
+import { isCloseToBottom } from "../Utils/Utils";
 
-const Course = () => {
+const Course = ({navigation}) => {
     const [categories, setCategories] = React.useState(null);
     const [courses, setCourses] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
@@ -54,11 +55,11 @@ const Course = () => {
         loadCourses();
     }, [q, cateId, page]);
 
-    const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
-        const paddingToBottom = 20;
-        return layoutMeasurement.height + contentOffset.y >=
-          contentSize.height - paddingToBottom;
-    };
+    // const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+    //     const paddingToBottom = 20;
+    //     return layoutMeasurement.height + contentOffset.y >=
+    //       contentSize.height - paddingToBottom;
+    // };
 
     const loadMore = ({nativeEvent}) => {
         if (loading===false && isCloseToBottom(nativeEvent)) {
@@ -85,7 +86,9 @@ const Course = () => {
             <ScrollView onScroll={loadMore}>
                 <RefreshControl onRefresh={() => loadCourses()} />
                 {loading && <ActivityIndicator/>}
-                {courses.map(c => <List.Item style={MyStyles.margin} key={c.id} title={c.subject} description={moment(c.created_date).fromNow()} left={() => <Image style={MyStyles.avatar} source={{uri: c.image}} />} />)}
+                {courses.map(c => <TouchableOpacity key={c.id} onPress={() => navigation.navigate('Lesson', {'courseId': c.id})}>
+                    <Item instance={c} />
+                </TouchableOpacity>)}
                 {loading && page > 1 && <ActivityIndicator/>}
             </ScrollView>
         </View>

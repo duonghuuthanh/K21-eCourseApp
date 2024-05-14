@@ -2,8 +2,7 @@ import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
     container: {
-        flex: 1,
-        marginTop: 60
+        flex: 1
     }, subject: {
         fontSize: 20,
         fontWeight: "bold",
