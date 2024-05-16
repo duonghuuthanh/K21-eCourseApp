@@ -17,5 +17,7 @@ export default StyleSheet.create({
         width: 80,
         height: 80,
         borderRadius: 20
+    }, center: {
+        alignSelf: "center"
     }
 });

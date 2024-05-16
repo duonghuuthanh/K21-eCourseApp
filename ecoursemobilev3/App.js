@@ -26,9 +26,9 @@ const Tab = createBottomTabNavigator();
 const MyTab = () => {
   return (
     <Tab.Navigator>
-      <Tab.Screen name='Home' component={MyStack} options={{tabBarIcon: () => <Icon color='blue' size={30} source="home" />}} />
-      <Tab.Screen name='Register' component={Register} options={{tabBarIcon: () => <Icon color='blue' size={30} source="account" />}} />
-      <Tab.Screen name='Login' component={Login} options={{tabBarIcon: () => <Icon color='blue' size={30} source="login" />}} />
+      <Tab.Screen name='Home' component={MyStack} options={{title: "Ứng dụng", tabBarIcon: () => <Icon color='blue' size={30} source="home" />}} />
+      <Tab.Screen name='Register' component={Register} options={{title: "Đăng ký",tabBarIcon: () => <Icon color='blue' size={30} source="account" />}} />
+      <Tab.Screen name='Login' component={Login} options={{title: "Đăng nhập",tabBarIcon: () => <Icon color='blue' size={30} source="login" />}} />
     </Tab.Navigator>
   );
 }
