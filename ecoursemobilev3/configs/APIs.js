@@ -1,11 +1,13 @@
 import axios from "axios";
 
 const BASE_URL = 'https://thanhduong.pythonanywhere.com/';
-// const BASE_URL = 'https://192.168.0.107:8000/'; // Network Error
 
 export const endpoints = {
     'categories': '/categories/',
-    'courses': '/courses/'
+    'courses': '/courses/',
+    'lessons': (courseId) => `/courses/${courseId}/lessons/`,
+    'lesson-detail': (lessonId) => `/lessons/${lessonId}/`,
+    'comments': (lessonId) => `/lessons/${lessonId}/comments/`
 }
 
 export default axios.create({
