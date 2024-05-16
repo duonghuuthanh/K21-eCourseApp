@@ -1,9 +1,11 @@
 import { View, ActivityIndicator, Text, useWindowDimensions, ScrollView } from "react-native";
-import { Card, Chip } from "react-native-paper";
+import { Button, Card, Chip, TextInput } from "react-native-paper";
 import APIs, { endpoints } from "../../configs/APIs";
 import React from "react";
 import MyStyles from "../../styles/MyStyles";
 import RenderHTML from "react-native-render-html";
+import { isCloseToBottom } from "../Utils/Utils";
+import Item from "../Utils/Item";
 
 const LessonDetails = ({route}) => {
     const [lesson, setLesson] = React.useState(null);
@@ -31,11 +33,16 @@ const LessonDetails = ({route}) => {
 
     React.useEffect(() => {
         loadLesson();
-    }, [lessonId])
+    }, [lessonId]);
+
+    const loadMoreInfo = ({nativeEvent}) => {
+        if (!comments && isCloseToBottom(nativeEvent))
+            loadComments();
+    }
 
     return (
         <View style={[MyStyles.container, MyStyles.margin]}>
-            <ScrollView>
+            <ScrollView onScroll={loadMoreInfo}>
             {lesson===null?<ActivityIndicator/>:<>
                 <Card>
                     <Card.Title title={lesson.subject} titleStyle={MyStyles.subject} />
@@ -59,6 +66,15 @@ const LessonDetails = ({route}) => {
                        
                     </Card.Content>
                 </Card>
+            </>}
+
+            <View>
+                <TextInput label="Nội dung bình luận..." />
+                <Button>Thêm bình luận</Button>
+            </View>
+
+            {comments===null?<ActivityIndicator />:<>
+                {comments.map(c => <Item key={c.id} instance={c} />)}
             </>}
             </ScrollView>
         </View>

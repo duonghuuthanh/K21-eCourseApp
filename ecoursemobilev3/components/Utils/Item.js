@@ -4,9 +4,9 @@ import moment from "moment";
 import MyStyles from "../../styles/MyStyles";
 
 const Item = ({instance}) => {
-    return <List.Item  title={instance.subject} 
+    return <List.Item  title={instance.subject || instance.content} 
                 description={instance.created_date?moment(instance.created_date).fromNow():""} 
-                left={() => <Image style={MyStyles.avatar} source={{uri: instance.image}} />}  />
+                left={() => <Image style={MyStyles.avatar} source={{uri: instance.image || instance.user.avatar}} />}  />
 }
 
 export default Item;

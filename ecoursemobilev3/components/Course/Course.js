@@ -6,6 +6,7 @@ import MyStyles from "../../styles/MyStyles";
 import 'moment/locale/vi';
 
 import Item from "../Utils/Item";
+import { isCloseToBottom } from "../Utils/Utils";
 
 const Course = ({navigation}) => {
     const [categories, setCategories] = React.useState(null);
@@ -57,11 +58,11 @@ const Course = ({navigation}) => {
         loadCourses();
     }, [q, cateId, page]);
 
-    const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
-        const paddingToBottom = 20;
-        return layoutMeasurement.height + contentOffset.y >=
-          contentSize.height - paddingToBottom;
-    };
+    // const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+    //     const paddingToBottom = 20;
+    //     return layoutMeasurement.height + contentOffset.y >=
+    //       contentSize.height - paddingToBottom;
+    // };
 
     const loadMore = ({nativeEvent}) => {
         if (!loading && page > 0 && isCloseToBottom(nativeEvent)) {
