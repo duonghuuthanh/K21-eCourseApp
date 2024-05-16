@@ -1,10 +1,14 @@
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
+import { Icon } from 'react-native-paper';
 
 import Course from './components/Course/Course';
 import Lesson from './components/Course/Lesson';
 import LessonDetails from './components/Course/LessonDetails';
+import Login from './components/User/Login';
+import Register from './components/User/Register';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,11 +22,21 @@ const MyStack = () => {
   );
 }
 
+const Tab = createBottomTabNavigator();
+const MyTab = () => {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name='Home' component={MyStack} options={{tabBarIcon: () => <Icon color='blue' size={30} source="home" />}} />
+      <Tab.Screen name='Register' component={Register} options={{tabBarIcon: () => <Icon color='blue' size={30} source="account" />}} />
+      <Tab.Screen name='Login' component={Login} options={{tabBarIcon: () => <Icon color='blue' size={30} source="login" />}} />
+    </Tab.Navigator>
+  );
+}
 
 export default function App() {
   return (
     <NavigationContainer>
-      <MyStack />
+      <MyTab />
     </NavigationContainer>
   );
 }
