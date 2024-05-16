@@ -1,10 +1,9 @@
-import { View, ActivityIndicator, Text, useWindowDimensions } from "react-native";
+import { View, ActivityIndicator, Text, useWindowDimensions, ScrollView } from "react-native";
 import { Card, Chip } from "react-native-paper";
 import APIs, { endpoints } from "../../configs/APIs";
 import React from "react";
 import MyStyles from "../../styles/MyStyles";
 import RenderHTML from "react-native-render-html";
-import { ScrollView } from "react-native-gesture-handler";
 
 const LessonDetails = ({route}) => {
     const [lesson, setLesson] = React.useState(null);

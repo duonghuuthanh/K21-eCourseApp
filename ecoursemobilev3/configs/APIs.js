@@ -6,7 +6,7 @@ export const endpoints = {
     'categories': '/categories/',
     'courses': '/courses/',
     'lessons': (courseId) => `/courses/${courseId}/lessons/`,
-    'lesson-detail': (lessonId) => `/lessons/${lessonId}/`,
+    'lesson-details': (lessonId) => `/lessons/${lessonId}/`,
     'comments': (lessonId) => `/lessons/${lessonId}/comments/`
 }
 
