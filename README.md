@@ -9,6 +9,10 @@
   <li>Executing the migrations: python manage.py migrate</li>
   <li>Creating an superuser (python manage.py createsuperuser) and accessing admin page to test</li>
 </ul>
+<pre>
+OAUTH2_PROVIDER = { 'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONOAuthLibCore' }  
+</pre>
+
 
 <h3>The steps run the project for Mobile App</h3>
 
