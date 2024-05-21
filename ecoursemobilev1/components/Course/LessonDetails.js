@@ -41,7 +41,6 @@ const LessonDetails = ({ route }) => {
         }
     }
 
-
     return (
         <View style={[MyStyles.container, MyStyles.margin]}>
            <ScrollView onScroll={loadMoreInfo}>
@@ -57,7 +56,7 @@ const LessonDetails = ({ route }) => {
                 </>}
 
                 {comments===null?<ActivityIndicator />:<>
-                    {comments.map(c =>  <List.Item style={MyStyles.margin}  title={c.content}
+                    {comments.map(c =>  <List.Item key={c.id} style={MyStyles.margin}  title={c.content}
                    description={moment(c.created_date).fromNow()} 
                    left={() => <Image style={MyStyles.avatar} source={{uri: c.user.avatar}} />} />)}
                 </>}

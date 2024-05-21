@@ -44,7 +44,6 @@ const Course = ({navigation}) => {
                 setLoading(false);
             }
         }
-        
     }
 
     React.useEffect(() => {
@@ -54,12 +53,6 @@ const Course = ({navigation}) => {
     React.useEffect(() => {
         loadCourses();
     }, [q, cateId, page]);
-
-    // const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
-    //     const paddingToBottom = 20;
-    //     return layoutMeasurement.height + contentOffset.y >=
-    //       contentSize.height - paddingToBottom;
-    // };
 
     const loadMore = ({nativeEvent}) => {
         if (loading===false && isCloseToBottom(nativeEvent)) {

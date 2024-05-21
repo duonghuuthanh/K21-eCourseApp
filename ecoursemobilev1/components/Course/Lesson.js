@@ -1,5 +1,4 @@
 import { View, Text, ActivityIndicator, TouchableOpacity } from "react-native";
-import { useState } from "react/cjs/react.production.min";
 import APIs, { endpoints } from "../../configs/APIs";
 import MyStyles from "../../styles/MyStyles";
 import React from "react";

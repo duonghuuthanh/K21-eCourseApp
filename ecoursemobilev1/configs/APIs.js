@@ -8,7 +8,19 @@ export const endpoints = {
     'lessons': (courseId) => `/courses/${courseId}/lessons`,
     'lesson-details': (lessonId) => `/lessons/${lessonId}/`,
     'comments': (lessonId) => `/lessons/${lessonId}/comments/`,
+    'register': '/users/',
+    'login': '/o/token/',
+    'current-user': '/users/current-user/'
 };
+
+export const authApi = (token) => {
+    return axios.create({
+        baseURL: BASE_URL,
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+}
 
 export default axios.create({
     baseURL: BASE_URL
