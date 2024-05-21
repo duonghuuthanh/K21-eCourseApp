@@ -3,7 +3,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { useContext, useReducer } from 'react';
 import { Icon } from 'react-native-paper';
-
 import Course from './components/Course/Course';
 import Lesson from './components/Course/Lesson';
 import LessonDetails from './components/Course/LessonDetails';
@@ -17,38 +16,39 @@ const Stack = createNativeStackNavigator();
 
 const MyStack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name='Course' component={Course} options={{title: 'Khóa học'}} />
-      <Stack.Screen name='Lesson' component={Lesson} options={{title: 'Bài học'}} />
-      <Stack.Screen name='LessonDetails' component={LessonDetails} options={{title: 'Chi tiết bài học'}} />
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name='Course' component={Course} options={{ title: 'Khóa học' }} />
+      <Stack.Screen name='Lesson' component={Lesson} options={{ title: 'Bài học' }} />
+      <Stack.Screen name='LessonDetails' component={LessonDetails} options={{ title: 'Chi tiết bài học' }} />
     </Stack.Navigator>
   );
 }
 
 const Tab = createBottomTabNavigator();
 const MyTab = () => {
-  const user = useContext(MyUserContext)
+  const user = useContext(MyUserContext);
+  console.info(Math.random())
+  console.info("test:" + user)
   return (
     <Tab.Navigator>
-      <Tab.Screen name='Home' component={MyStack} options={{title: "Ứng dụng", tabBarIcon: () => <Icon color='blue' size={30} source="home" />}} />
-      {user===null?<>
-        <Tab.Screen name='Register' component={Register} options={{title: "Đăng ký",tabBarIcon: () => <Icon color='blue' size={30} source="account" />}} />
-        <Tab.Screen name='Login' component={Login} options={{title: "Đăng nhập",tabBarIcon: () => <Icon color='blue' size={30} source="login" />}} />
-      </>:<>
-      <Tab.Screen name='Profile' component={UserProfile} options={{title: user.username||"Profile" ,tabBarIcon: () => <Icon color='blue' size={30} source="login" />}} />
+      <Tab.Screen name='Home' component={MyStack} options={{ title: "Ứng dụng", tabBarIcon: () => <Icon color='blue' size={30} source="home" /> }} />
+      {user === null ? <>
+        <Tab.Screen name='Register' component={Register} options={{ title: "Đăng ký", tabBarIcon: () => <Icon color='blue' size={30} source="account" /> }} />
+        <Tab.Screen name='Login' component={Login} options={{ title: "Đăng nhập", tabBarIcon: () => <Icon color='blue' size={30} source="login" /> }} />
+      </> : <>
+        <Tab.Screen name='Profile' component={UserProfile} options={{ title: user.username || "Profile", tabBarIcon: () => <Icon color='blue' size={30} source="login" /> }} />
       </>}
-      
     </Tab.Navigator>
   );
 }
 
 export default function App() {
-  const [user, dispatcher] = useReducer(MyUserReducer, null);
+  const [user, dispatch] = useReducer(MyUserReducer, null);
 
   return (
     <NavigationContainer>
       <MyUserContext.Provider value={user}>
-        <MyDispatcherContext.Provider value={dispatcher}>
+        <MyDispatcherContext.Provider value={dispatch}>
           <MyTab />
         </MyDispatcherContext.Provider>
       </MyUserContext.Provider>
