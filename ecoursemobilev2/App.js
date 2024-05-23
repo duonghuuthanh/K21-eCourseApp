@@ -10,7 +10,7 @@ import { Icon } from "react-native-paper";
 import { MyDispatchContext, MyUserContext } from "./configs/Context";
 import { useContext, useReducer } from "react";
 import Profile from "./components/User/Profile";
-import { MyUserReducers } from "./configs/Reducers";
+import MyUserReducer from "./configs/Reducers";
 
 const Stack = createStackNavigator();
 
@@ -43,7 +43,7 @@ const MyTab = () => {
 }
 
 const App = () => {
-  const [user, dispatch] = useReducer(MyUserReducers, null);
+  const [user, dispatch] = useReducer(MyUserReducer, null);
 
   return (
     <NavigationContainer>
